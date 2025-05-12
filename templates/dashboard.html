@@ -5,7 +5,7 @@
 <div class="top-bar">
   <button onclick="location.href='{{ url_for('new_incident') }}'" class="btn-primary">Создать инцидент</button>
   <button onclick="location.href='{{ url_for('incidents') }}'" class="btn-secondary">Список инцидентов</button>
-  <button onclick="location.href='{{ url_for('register') }}'" class="btn-secondary" {% if current_user.role!='administrator' %}disabled{% endif %}>Назначить ресурс</button>
+  <button onclick="location.href='{{ url_for('assign_resource') }}'" class="btn-secondary" {% if current_user.role!='administrator' %}disabled{% endif %}>Назначить ресурс</button>
 </div>
 
 <div class="main-content">

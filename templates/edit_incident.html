@@ -24,6 +24,15 @@
           {% endfor %}
         </select>
       </div>
+      <div class="form-group">
+        <label for="resource_id">Назначить ресурс:</label>
+        <select id="resource_id" name="resource_id">
+          <option value="">—</option>
+          {% for r in resources %}
+          <option value="{{ r.id }}">{{ r.name }} ({{ r.status }})</option>
+          {% endfor %}
+        </select>
+      </div>
       <button type="submit" class="btn-primary">Сохранить</button>
     </form>
   </div>

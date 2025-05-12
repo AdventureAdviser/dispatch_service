@@ -17,6 +17,24 @@
         <label for="description">Описание:</label>
         <textarea id="description" name="description"></textarea>
       </div>
+      <div class="form-group">
+        <label for="resource_id">Назначить ресурс:</label>
+        <select id="resource_id" name="resource_id">
+          <option value="">—</option>
+          {% for r in resources %}
+          <option value="{{ r.id }}">{{ r.name }} ({{ r.status }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="assigned_to">Оператор:</label>
+        <select id="assigned_to" name="assigned_to">
+          <option value="">—</option>
+          {% for op in operators %}
+          <option value="{{ op.id }}">{{ op.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <button type="submit" class="btn-primary">Создать</button>
     </form>
   </div>

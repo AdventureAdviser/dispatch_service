@@ -41,6 +41,27 @@
     {% endif %}
   {% endwith %}
 
+</body>
   {% block content %}{% endblock %}
+<script>
+  if ("Notification" in window) {
+    Notification.requestPermission();
+    let lastCheck = new Date().toISOString();
+    setInterval(() => {
+      fetch(`/api/incidents/updates?since=${encodeURIComponent(lastCheck)}`)
+        .then(res => res.json())
+        .then(data => {
+          data.forEach(inc => {
+            new Notification(`Инцидент #${inc.id}`, {
+              body: `${inc.substance} на ${inc.location} (${inc.status})`
+            });
+          });
+          if (data.length > 0) {
+            lastCheck = new Date().toISOString();
+          }
+        });
+    }, 10000);
+  }
+</script>
 </body>
 </html>
