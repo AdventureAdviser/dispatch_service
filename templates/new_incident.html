@@ -18,9 +18,8 @@
         <textarea id="description" name="description"></textarea>
       </div>
       <div class="form-group">
-        <label for="resource_id">Назначить ресурс:</label>
-        <select id="resource_id" name="resource_id">
-          <option value="">—</option>
+        <label for="resource_ids">Назначить ресурсы:</label>
+        <select id="resource_ids" name="resource_ids" multiple size="5">
           {% for r in resources %}
           <option value="{{ r.id }}">{{ r.name }} ({{ r.status }})</option>
           {% endfor %}

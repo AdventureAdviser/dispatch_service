@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
+from sqlalchemy import or_
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -112,7 +113,7 @@ def incidents():
 @app.route('/incidents/new', methods=['GET', 'POST'])
 @login_required
 def new_incident():
-    resources = Resource.query.filter_by(status='Ready').all()
+    resources_available = Resource.query.filter_by(status='Ready').all()
     operators = User.query.filter_by(role='operator').all()
     if request.method == 'POST':
         inc = Incident(
@@ -123,18 +124,18 @@ def new_incident():
         )
         db.session.add(inc)
         db.session.commit()
-        res_id = request.form.get('resource_id')
-        if res_id:
-            res = Resource.query.get(int(res_id))
+        res_ids = request.form.getlist('resource_ids')
+        for rid in res_ids:
+            res = Resource.query.get(int(rid))
             res.assigned_incident = inc
             res.status = 'In Progress'
-            db.session.commit()
+        db.session.commit()
         user_id = request.form.get('assigned_to')
         if user_id:
             inc.assigned_to = User.query.get(int(user_id))
             db.session.commit()
         return redirect(url_for('incidents'))
-    return render_template('new_incident.html', resources=resources, operators=operators)
+    return render_template('new_incident.html', resources=resources_available, operators=operators)
 
 
 
@@ -144,19 +145,24 @@ def edit_incident(incident_id):
     inc = Incident.query.get_or_404(incident_id)
     users = User.query.filter(User.role.in_(['dispatcher','operator'])).all()
     statuses = ['Open', 'In Progress', 'Closed']
-    resources = Resource.query.filter_by(status='Ready').all()
+    resources_available = Resource.query.filter(or_(Resource.status=='Ready', Resource.assigned_incident==inc)).all()
     if request.method == 'POST':
         inc.status = request.form['status']
         user_id = request.form.get('assigned_to')
         inc.assigned_to = User.query.get(user_id) if user_id else None
-        res_id = request.form.get('resource_id')
-        if res_id:
-            res = Resource.query.get(int(res_id))
-            res.assigned_incident = inc
-            res.status = 'In Progress'
+        new_ids = set(request.form.getlist('resource_ids'))
+        for r in inc.resources[:]:
+            if str(r.id) not in new_ids:
+                r.assigned_incident = None
+                r.status = 'Ready'
+        for rid in new_ids:
+            r = Resource.query.get(int(rid))
+            if r.assigned_incident_id != inc.id:
+                r.assigned_incident = inc
+                r.status = 'In Progress'
         db.session.commit()
         return redirect(url_for('incidents'))
-    return render_template('edit_incident.html', incident=inc, users=users, statuses=statuses, resources=resources)
+    return render_template('edit_incident.html', incident=inc, users=users, statuses=statuses, resources_available=resources_available)
 
 # API для уведомлений об изменениях инцидентов
 @app.route('/api/incidents/updates')

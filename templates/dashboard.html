@@ -1,18 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-
-<div class="top-bar">
-  <button onclick="location.href='{{ url_for('new_incident') }}'" class="btn-primary">Создать инцидент</button>
-  <button onclick="location.href='{{ url_for('incidents') }}'" class="btn-secondary">Список инцидентов</button>
-  <button onclick="location.href='{{ url_for('assign_resource') }}'" class="btn-secondary" {% if current_user.role!='administrator' %}disabled{% endif %}>Назначить ресурс</button>
-</div>
-
 <div class="main-content">
-  <div class="kpi-cards">
+  <div class="top-bar">
     <div class="kpi-card">Открыто: {{ open_count }}</div>
+    <div>
+      <button onclick="location.href='{{ url_for('new_incident') }}'" class="btn-primary">Создать инцидент</button>
+      <button onclick="location.href='{{ url_for('incidents') }}'" class="btn-secondary">Список инцидентов</button>
+      <button onclick="location.href='{{ url_for('assign_resource') }}'" class="btn-secondary" {% if current_user.role!='administrator' %}disabled{% endif %}>Назначить ресурс</button>
+    </div>
   </div>
-
   <div class="table-container">
     <table>
       <thead>
@@ -42,5 +39,4 @@
     </table>
   </div>
 </div>
-
 {% endblock %}

@@ -23,9 +23,9 @@
         <input id="date_to" type="date" name="date_to" value="{{ request.args.get('date_to','') }}">
       </div>
       <button type="submit" class="btn-secondary">Фильтр</button>
+      <button type="button" onclick="location.href='{{ url_for('new_incident') }}'" class="btn-primary">Новый инцидент</button>
     </form>
   </div>
-
   <div class="table-container">
     <table>
       <thead>
@@ -42,7 +42,13 @@
           <td>{{ inc.substance }}</td>
           <td>{{ inc.status }}</td>
           <td>{{ inc.assigned_to.username if inc.assigned_to else '-' }}</td>
-          <td><a href="{{ url_for('edit_incident', incident_id=inc.id) }}">Редактировать</a></td>
+          <td>
+            <button type="button"
+                    class="btn-secondary"
+                    onclick="location.href='{{ url_for('edit_incident', incident_id=inc.id) }}'">
+              Редактировать
+            </button>
+          </td>
           <td>
             {% if inc.resources %}
               {{ inc.resources | map(attribute='name') | join(', ') }}

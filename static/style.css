@@ -19,7 +19,10 @@ body {
 .top-bar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: var(--grid-gutter);
   padding: var(--spacing-section);
+  margin-bottom: var(--spacing-section);
 }
 
 .btn-icon {
@@ -211,4 +214,13 @@ label {
   border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
   justify-content: center;
+}
+
+/* Left-aligned action bars */
+.top-bar.left {
+  justify-content: flex-start;
+}
+.top-bar.left .btn-primary,
+.top-bar.left .btn-secondary {
+  margin-right: var(--grid-gutter);
 }
