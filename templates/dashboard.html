@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="top-bar">
+  <button onclick="location.href='{{ url_for('new_incident') }}'" class="btn-primary">Создать инцидент</button>
+  <button onclick="location.href='{{ url_for('incidents') }}'" class="btn-secondary">Список инцидентов</button>
+  <button onclick="location.href='{{ url_for('register') }}'" class="btn-secondary" {% if current_user.role!='administrator' %}disabled{% endif %}>Назначить ресурс</button>
+</div>
+
+<div class="main-content">
+  <div class="kpi-cards">
+    <div class="kpi-card">Открыто: {{ open_count }}</div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Время</th><th>Локация</th><th>Вещество</th><th>Статус</th><th>Оператор</th><th>Ресурсы</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inc in last_incidents %}
+        <tr onclick="location.href='{{ url_for('edit_incident', incident_id=inc.id) }}'">
+          <td>{{ inc.id }}</td>
+          <td>{{ inc.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ inc.location }}</td>
+          <td>{{ inc.substance }}</td>
+          <td>{{ inc.status }}</td>
+          <td>{{ inc.assigned_to.username if inc.assigned_to else '-' }}</td>
+          <td>
+            {% if inc.resources %}
+              {{ inc.resources | map(attribute='name') | join(', ') }}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

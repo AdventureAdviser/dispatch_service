@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Новый инцидент{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="form-container">
+    <h2>Новый инцидент</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="location">Локация:</label>
+        <input id="location" type="text" name="location" required>
+      </div>
+      <div class="form-group">
+        <label for="substance">Вещество:</label>
+        <input id="substance" type="text" name="substance" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Создать</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

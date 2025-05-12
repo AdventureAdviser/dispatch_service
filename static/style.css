@@ -1,0 +1,214 @@
+:root {
+  --font-family: 'Rifton', sans-serif;
+  --bg-base: #0E0F11;
+  --text-primary: #F5E9E6;
+  --text-secondary: rgba(255,255,255,0.6);
+  --accent: #F5E0DC;
+  --grid-gutter: 24px;
+  --spacing-section: 32px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-section);
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #FFF;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+
+.main-content {
+  margin-left: 240px;
+  padding: var(--spacing-section);
+}
+
+.kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gutter);
+  margin-bottom: var(--spacing-section);
+}
+
+.kpi-card {
+  background: #111214;
+  padding: 24px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.table-container {
+  background: #111214;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #1A1B1D;
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* ===== Кнопки ===== */
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg-base);
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* ===== Поля форм ===== */
+input[type="text"],
+input[type="password"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: 16px;
+  margin: 8px 0 16px;
+  transition: border-color 0.2s;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== Надписи (label) ===== */
+label {
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+/* ===== Группировка полей ===== */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.sidebar-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background: #111214;
+  padding: var(--spacing-section) 0;
+}
+.sidebar-nav nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-nav nav li {
+  margin-bottom: var(--spacing-section);
+  text-align: center;
+}
+.sidebar-link {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 16px;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 4px;
+}
+.sidebar-link:hover,
+.sidebar-link.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--accent);
+}
+
+/* ===== Sidebar layering and content shift ===== */
+.sidebar-nav {
+  z-index: 1000;
+}
+.top-bar {
+  margin-left: 240px;
+}
+
+/* ===== Narrow form container ===== */
+.form-container {
+  max-width: 360px;
+  margin: 0 auto;
+  padding: var(--spacing-section);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: var(--bg-base);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-left: 240px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 240px;
+  right: 0;
+  background: var(--bg-base);
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: center;
+}

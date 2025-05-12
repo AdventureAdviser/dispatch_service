@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Диспетчерская{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+  <aside class="sidebar-nav">
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}" class="sidebar-link {% if request.endpoint=='index' %}active{% endif %}">Dashboard</a></li>
+        <li><a href="{{ url_for('incidents') }}" class="sidebar-link {% if request.endpoint=='incidents' %}active{% endif %}">Список инцидентов</a></li>
+        <li><a href="{{ url_for('new_incident') }}" class="sidebar-link {% if request.endpoint=='new_incident' %}active{% endif %}">Создать инцидент</a></li>
+        <li>
+          <a href="{{ url_for('resources') }}" class="sidebar-link {% if request.endpoint=='resources' %}active{% endif %}">
+            Ресурсы
+          </a>
+        </li>
+        {% if current_user.role == 'administrator' %}
+        <li><a href="{{ url_for('register') }}" class="sidebar-link {% if request.endpoint=='register' %}active{% endif %}">Новый пользователь</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('logout') }}" class="sidebar-link">Выйти</a></li>
+      </ul>
+    </nav>
+  </aside>
+  {% endif %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="flash {{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>

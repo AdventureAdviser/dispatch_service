@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Ресурсы{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="top-bar">
+    <button onclick="location.href='{{ url_for('new_resource') }}'" class="btn-primary">Новый ресурс</button>
+    <button onclick="location.href='{{ url_for('assign_resource') }}'" class="btn-secondary">Назначить ресурс</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Имя</th><th>Тип</th><th>Контакт</th><th>Статус</th><th>Инцидент</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in resources %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.type }}</td>
+          <td>{{ r.contact or '-' }}</td>
+          <td>{{ r.status }}</td>
+          <td>{{ r.assigned_incident.id if r.assigned_incident else '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

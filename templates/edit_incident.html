@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Редактировать инцидент{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="form-container">
+    <h2>Инцидент #{{ incident.id }}</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="status">Статус:</label>
+        <select id="status" name="status">
+          {% for s in statuses %}
+          <option value="{{ s }}" {% if incident.status==s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="assigned_to">Оператор:</label>
+        <select id="assigned_to" name="assigned_to">
+          <option value="">—</option>
+          {% for u in users %}
+          <option value="{{ u.id }}" {% if incident.assigned_to_id==u.id %}selected{% endif %}>
+            {{ u.username }} ({{ u.role }})
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-primary">Сохранить</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

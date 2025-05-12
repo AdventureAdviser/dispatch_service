@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Назначить ресурс{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="form-container">
+    <h2>Назначить ресурс</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="resource_id">Ресурс:</label>
+        <select id="resource_id" name="resource_id">
+          {% for r in resources %}
+          <option value="{{ r.id }}">{{ r.name }} ({{ r.status }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="incident_id">Инцидент:</label>
+        <select id="incident_id" name="incident_id">
+          {% for inc in incidents %}
+          <option value="{{ inc.id }}">#{{ inc.id }} — {{ inc.timestamp.strftime('%Y-%m-%d %H:%M') }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-primary">Назначить</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
