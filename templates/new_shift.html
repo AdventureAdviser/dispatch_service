@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Назначить смену{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="form-container">
+    <h2>Назначить смену</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="operator_id">Оператор:</label>
+        <select id="operator_id" name="operator_id">
+          {% for op in operators %}
+          <option value="{{ op.id }}">{{ op.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="date">Дата:</label>
+        <input id="date" type="date" name="date" required>
+      </div>
+      <div class="form-group">
+        <label for="shift_type">Смена:</label>
+        <select id="shift_type" name="shift_type">
+          {% for st in shift_types %}
+          <option value="{{ st }}">{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-primary">Создать</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

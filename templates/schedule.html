@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Планирование смен{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="top-bar">
+    <button onclick="location.href='{{ url_for('new_shift') }}'" class="btn-primary">Назначить смену</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Оператор</th>
+          {% for d in dates %}
+          <th>{{ d.strftime('%a %d-%m') }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for op in operators %}
+        <tr>
+          <td>{{ op.username }}</td>
+          {% for d in dates %}
+          <td>
+            {% if shift_map.get(op.id) and shift_map[op.id].get(d) %}
+              {{ shift_map[op.id][d].shift_type }}
+              <a href="{{ url_for('edit_shift', shift_id=shift_map[op.id][d].id) }}" class="btn-secondary">Изм.</a>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

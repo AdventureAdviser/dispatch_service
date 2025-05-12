@@ -19,6 +19,11 @@
             Ресурсы
           </a>
         </li>
+        <li>
+          <a href="{{ url_for('schedule') }}" class="sidebar-link {% if request.endpoint=='schedule' %}active{% endif %}">
+            Смены
+          </a>
+        </li>
         {% if current_user.role == 'administrator' %}
         <li><a href="{{ url_for('register') }}" class="sidebar-link {% if request.endpoint=='register' %}active{% endif %}">Новый пользователь</a></li>
         {% endif %}

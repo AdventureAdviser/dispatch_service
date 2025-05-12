@@ -51,6 +51,14 @@ class Resource(db.Model):
     assigned_incident_id = db.Column(db.Integer, db.ForeignKey('incident.id'), nullable=True)
     assigned_incident = db.relationship('Incident', backref='resources')
 
+# Модель смены
+class Shift(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    operator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    operator = db.relationship('User', backref='shifts')
+    date = db.Column(db.Date, nullable=False)
+    shift_type = db.Column(db.String(20), nullable=False)
+
 
 @app.route('/')
 @login_required
@@ -168,6 +176,51 @@ def assign_resource():
         db.session.commit()
         return redirect(url_for('resources'))
     return render_template('assign_resource.html', incidents=incidents, resources=resources)
+
+# Просмотр расписания смен на текущую неделю
+@app.route('/schedule')
+@login_required
+def schedule():
+    today = datetime.date.today()
+    start = today - datetime.timedelta(days=today.weekday())
+    dates = [start + datetime.timedelta(days=i) for i in range(7)]
+    operators = User.query.filter_by(role='operator').all()
+    shifts = Shift.query.filter(Shift.date.between(dates[0], dates[-1])).all()
+    shift_map = {}
+    for sh in shifts:
+        shift_map.setdefault(sh.operator_id, {})[sh.date] = sh
+    return render_template('schedule.html', operators=operators, dates=dates, shift_map=shift_map)
+
+# Назначить новую смену
+@app.route('/schedule/new', methods=['GET', 'POST'])
+@login_required
+def new_shift():
+    operators = User.query.filter_by(role='operator').all()
+    shift_types = ['Day', 'Evening', 'Night']
+    if request.method == 'POST':
+        op_id = int(request.form['operator_id'])
+        d = datetime.date.fromisoformat(request.form['date'])
+        # валидация: перекрытие
+        if Shift.query.filter_by(operator_id=op_id, date=d).first():
+            flash('Смена на этот день уже назначена', 'warning')
+            return redirect(url_for('schedule'))
+        sh = Shift(operator_id=op_id, date=d, shift_type=request.form['shift_type'])
+        db.session.add(sh)
+        db.session.commit()
+        return redirect(url_for('schedule'))
+    return render_template('new_shift.html', operators=operators, shift_types=shift_types)
+
+# Редактировать смену
+@app.route('/schedule/edit/<int:shift_id>', methods=['GET', 'POST'])
+@login_required
+def edit_shift(shift_id):
+    sh = Shift.query.get_or_404(shift_id)
+    shift_types = ['Day', 'Evening', 'Night']
+    if request.method == 'POST':
+        sh.shift_type = request.form['shift_type']
+        db.session.commit()
+        return redirect(url_for('schedule'))
+    return render_template('edit_shift.html', shift=sh, shift_types=shift_types)
 
 
 # Регистрация новых пользователей — только админ

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Изменить смену{% endblock %}
+{% block content %}
+<div class="main-content">
+  <div class="form-container">
+    <h2>Смена #{{ shift.id }}: {{ shift.operator.username }} – {{ shift.date.strftime('%Y-%m-%d') }}</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="shift_type">Смена:</label>
+        <select id="shift_type" name="shift_type">
+          {% for st in shift_types %}
+          <option value="{{ st }}" {% if shift.shift_type==st %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn-primary">Сохранить</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
